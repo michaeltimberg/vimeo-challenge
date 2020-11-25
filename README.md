@@ -5,6 +5,7 @@
 ## Contents
 
  - [**Statement**](#statement)
+ - [**Assumptions**](#assumptions)
  - [**Prerequisites**](#prerequisites)
  - [**Setup**](#setup)
  - [**Usage**](#usage)
@@ -75,6 +76,18 @@ need to solve use cases other than the one we're describing.
 Thanks for taking the time to complete this exercise!
 
 <3, Vimeo
+
+## Assumptions
+
+The script (`./error_percentage/error_percentage.py`) was written under the
+following assumptions:
+
+ - Any log file fed into it would have the same format as `./test/log_sample.txt`
+ - The script could be utilized on the smallest virtual machines AWS or GCP has
+   to offer: single threaded, with low memory requirements
+ - The script is able to be run in a VM or Docker image that is Python 3.8
+   capable
+ - 
 
  ## Prerequisites
 
