@@ -19,10 +19,36 @@ def error_percentage(file_path):
     :return: Boolean if any exceptions were raised.  For exit codes.
     :raise OSError:  if the file path is invalid or if the file cannot be read.
     """
+    domains = {}
+    end = 0
+    start = 2147483648
+
     try:
         with open(buffering=1, file=file_path,
                   mode='rt', encoding='utf8', ) as file:
-            [print(line, end='') for line in file]
+            # [print(line, end='') for line in file]
+            for line in file:
+                # log = line.split(' | ')
+                [timestamp, _, domain, _, status_code] = line.split(' | ')[0:5]
+
+                timestamp = int(round(float(timestamp)))
+                end = timestamp if timestamp > end else end
+                start = timestamp if timestamp < start else start
+
+                # if not domains.get(domain, default=False):
+                if not domains.get(domain, False):
+                    domains[domain] = {'errors': 0, 'total': 0}
+                domains[domain]['total'] += 1
+                domains[domain]['errors'] += 1 if status_code[:1] == '5' else 0
+
+        print(start, end, sep='\n')
+        [print(name, domain.get('errors'), domain.get('total'), sep='\n')
+         for (name, domain) in domains.items()]
+        # print(do  mains)
+        # print(f'start: {start}')
+        # print(f'end: {end}')
+        # return domains
+        return True
     except Exception as error:
         exception(msg=error)
         return False
