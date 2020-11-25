@@ -11,12 +11,13 @@ import click
               type=str)
 def error_percentage(file_path):
     """
-    Hopefully, when complete, this script will:
-     1. Read input file in chunks
-     2. Read chunks line by line
-     3. TODO
-    :param file_path:
-    :return: Boolean if any exceptions were raised.  For exit codes.
+    This script:
+     1. Reads a log file line by line
+     2. parses each line to obtain a timestamp, domain and HTTP status code
+     3. Output the time interval for the log file and percent of 5xx errors per
+        domain
+    :param file_path: The relative path of the log file
+    :return: Boolean if any exceptions were raised: for exit codes.
     :raise OSError:  if the file path is invalid or if the file cannot be read.
     """
     try:
@@ -29,10 +30,7 @@ def error_percentage(file_path):
             for line in file:
                 [timestamp, _, domain, _, status_code] = line.split(' | ')[0:5]
 
-                # timestamp = int(round(float(timestamp)))
-                # end = timestamp if timestamp > end else end
                 end = e if (e := int(round(float(timestamp)))) > end else end
-                # start = timestamp if timestamp < start else start
                 start = s if (s := int(float(timestamp))) < start else start
 
                 if not domains.get(domain, False):
@@ -40,13 +38,10 @@ def error_percentage(file_path):
                 domains[domain]['total'] += 1
                 domains[domain]['errors'] += 1 if status_code[:1] == '5' else 0
 
-        # print(start, end, sep='\n')
-        # [print(name, domain.get('errors'), domain.get('total'), sep='\n')
-        # for (name, domain) in domains.items()]
-        output = f'Between time {start} and time {end}:\n'
-        for domain_name, domain in domains.items():
+        output = 'Between time {0} and time {1}:\n'.format(start, end)
+        for domain_name, d in domains.items():
             output += f'{domain_name} returned ' \
-                      f'{round((domain.get("errors") / domain.get("total")) * 100, 2):.2f}% ' \
+                      f'{round((d["errors"] / d["total"]) * 100, 2):.2f}% ' \
                       f'5xx errors\n'
 
         print(output, end='')
