@@ -19,11 +19,11 @@ def error_percentage(file_path):
     :return: Boolean if any exceptions were raised.  For exit codes.
     :raise OSError:  if the file path is invalid or if the file cannot be read.
     """
-    domains = {}
-    end = 0
-    start = 2147483648
-
     try:
+        domains = {}
+        end = 0
+        start = 2147483648
+
         with open(buffering=1, file=file_path,
                   mode='rt', encoding='utf8') as file:
             for line in file:
