@@ -26,16 +26,17 @@ def error_percentage(
     start_timestamp
 ):
     """
-    This script:
-     1. Reads a log file line by line
-     2. parses each line to obtain a timestamp, domain and HTTP status code
-     3. Output the time interval for the log file and percent of 5xx errors per
-        domain
-    :param end_timestamp: End time, expressed as a Unix epoch timestamp.
-    :param file_path: The relative path of the log file
-    :param start_timestamp: Start time, expressed as a Unix epoch timestamp.
-    :return: Boolean if any exceptions were raised: for exit codes.
-    :raise OSError:  if the file path is invalid or if the file cannot be read.
+    This script: \n
+     1. Reads a log file line by line \n
+     2. parses each line to obtain a timestamp, domain and HTTP status code \n
+     3. Output the time interval for the log file and percent of 5xx errors \n
+        per domain \n
+    :param end_timestamp: End time, expressed as a Unix epoch timestamp. \n
+    :param file_path: The relative path of the log file \n
+    :param start_timestamp: Start time, expressed as a Unix epoch timestamp. \n
+    :return: Boolean if any exceptions were raised: for exit codes. \n
+    :raise OSError: if the file path is invalid or if the file cannot be \n
+                    read.
     """
     try:
         domains = {}

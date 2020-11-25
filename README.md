@@ -87,7 +87,12 @@ following assumptions:
    to offer: single threaded, with low memory requirements
  - The script is able to be run in a VM or Docker image that is Python 3.8
    capable
- - 
+ - That only 5xx errors would be relevant (this is addressed in the
+   instructions)
+ - The encoding of the log file (should be default UTF-8 for all Python
+   files, but that isn't always true in practice)
+ - The newline char. for the log file would be `\n` when I make use of the
+   built-in func. `.splitlines()`
 
  ## Prerequisites
 
@@ -145,10 +150,30 @@ following assumptions:
 
 ## Usage
 
-This script can be ran directly:
+This script can be ran directly from the base dir.:
 
 ```shell script
-python ./etl/extract_transform_load.py
+python ./error_percentage/error_percentage.py \
+ --end-timestamp=1493969200 \
+ --file-path=./test/log_sample.txt \
+ --start-timestamp=1493969000
+```
+
+Use the `--help` flag for more information about the required arguments:
+
+```shell script
+python ./error_percentage/error_percentage.py --help
+Usage: error_percentage.py [OPTIONS]
+. . .
+Options:
+  -e, --end-timestamp INTEGER    End time, expressed as a Unix epoch timestamp
+                                 [required]
+
+  -f, --file-path TEXT           Relative path to log file.  [required]
+  -s, --start-timestamp INTEGER  Start time, expressed as a Unix epoch
+                                 timestamp  [required]
+
+  --help                         Show this message and exit.
 ```
 
 ## Testing
@@ -188,5 +213,20 @@ pytest \
 === test session starts ===
 . . .
 ```
+
+Increase verbosity with the `--verbosity` flag:
+
+```shell script
+pytest \
+ --verbosity=2
+
+#=>
+
+=== test session starts ===
+. . .
+test/test_error_percentage.py::test_output_format PASSED [100%]
+```
+
+where the verbosity is expressed as a natual number.
 
 [1]: https://www.python.org/downloads
