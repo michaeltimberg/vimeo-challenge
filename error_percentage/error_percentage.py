@@ -29,18 +29,27 @@ def error_percentage(file_path):
             for line in file:
                 [timestamp, _, domain, _, status_code] = line.split(' | ')[0:5]
 
-                timestamp = int(round(float(timestamp)))
-                end = timestamp if timestamp > end else end
-                start = timestamp if timestamp < start else start
+                # timestamp = int(round(float(timestamp)))
+                # end = timestamp if timestamp > end else end
+                end = e if (e := int(round(float(timestamp)))) > end else end
+                # start = timestamp if timestamp < start else start
+                start = s if (s := int(float(timestamp))) < start else start
 
                 if not domains.get(domain, False):
                     domains[domain] = {'errors': 0, 'total': 0}
                 domains[domain]['total'] += 1
                 domains[domain]['errors'] += 1 if status_code[:1] == '5' else 0
 
-        print(start, end, sep='\n')
-        [print(name, domain.get('errors'), domain.get('total'), sep='\n')
-         for (name, domain) in domains.items()]
+        # print(start, end, sep='\n')
+        # [print(name, domain.get('errors'), domain.get('total'), sep='\n')
+        # for (name, domain) in domains.items()]
+        output = f'Between time {start} and time {end}:\n'
+        for domain_name, domain in domains.items():
+            output += f'{domain_name} returned ' \
+                      f'{round((domain.get("errors") / domain.get("total")) * 100, 2):.2f}% ' \
+                      f'5xx errors\n'
+
+        print(output, end='')
         return True
     except Exception as error:
         exception(msg=error)
