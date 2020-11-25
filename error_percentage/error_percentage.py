@@ -7,6 +7,7 @@ import click
 @click.option('--file-path',
               '-f',
               help='Relative path to log file.',
+              multiple=True,
               required=True,
               type=str)
 def error_percentage(file_path):
@@ -25,18 +26,26 @@ def error_percentage(file_path):
         end = 0
         start = 2147483648
 
-        with open(buffering=1, file=file_path,
-                  mode='rt', encoding='utf8') as file:
-            for line in file:
-                [timestamp, _, domain, _, status_code] = line.split(' | ')[0:5]
+        for file in list(file_path):
+            with open(buffering=1, file=file,
+                      mode='rt', encoding='utf8') as log_file:
+                for line in log_file:
+                    [timestamp,
+                     _,
+                     domain,
+                     _,
+                     status_code] = line.split(' | ')[0:5]
 
-                end = e if (e := int(round(float(timestamp)))) > end else end
-                start = s if (s := int(float(timestamp))) < start else start
+                    end = int(round(float(timestamp))) if \
+                        int(round(float(timestamp))) > end else end
+                    start = int(float(timestamp)) \
+                        if int(float(timestamp)) < start else start
 
-                if not domains.get(domain, False):
-                    domains[domain] = {'errors': 0, 'total': 0}
-                domains[domain]['total'] += 1
-                domains[domain]['errors'] += 1 if status_code[:1] == '5' else 0
+                    if not domains.get(domain, False):
+                        domains[domain] = {'errors': 0, 'total': 0}
+                    domains[domain]['total'] += 1
+                    domains[domain]['errors'] += 1 \
+                        if status_code[:1] == '5' else 0
 
         output = 'Between time {0} and time {1}:\n'.format(start, end)
         for domain_name, d in domains.items():
