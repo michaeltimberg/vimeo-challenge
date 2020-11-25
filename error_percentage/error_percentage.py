@@ -25,7 +25,7 @@ def error_percentage(file_path):
 
     try:
         with open(buffering=1, file=file_path,
-                  mode='rt', encoding='utf8', ) as file:
+                  mode='rt', encoding='utf8') as file:
             for line in file:
                 [timestamp, _, domain, _, status_code] = line.split(' | ')[0:5]
 
