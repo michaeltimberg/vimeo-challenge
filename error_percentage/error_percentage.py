@@ -39,8 +39,6 @@ def error_percentage(
     """
     try:
         domains = {}
-        # end = 0
-        # start = 2147483648
 
         for file in list(file_path):
             with open(buffering=1, file=file,
@@ -52,12 +50,6 @@ def error_percentage(
                      _,
                      status_code] = line.split(' | ')[0:5]
 
-                    '''
-                    end = int(round(float(timestamp))) if \
-                        int(round(float(timestamp))) > end else end
-                    start = int(float(timestamp)) \
-                        if int(float(timestamp)) < start else start
-                        '''
                     if (int(float(timestamp)) < start_timestamp
                             or int(float(timestamp)) >= end_timestamp):
                         continue
