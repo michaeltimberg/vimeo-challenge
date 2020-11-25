@@ -12,6 +12,7 @@ def test_reading_file():
         '''
 
 
+'''
 def test_log_comprehension():
     result = CliRunner().invoke(error_percentage, ['--file-path',
                                                    './test/log_sample.txt'])
@@ -19,3 +20,13 @@ def test_log_comprehension():
     assert result.output.splitlines() == ['1493969102', '1493969102',
                                           'player.vimeo.com', '8', '24',
                                           'vimeo.com', '4', '10']
+                                          '''
+
+
+def test_output_format():
+    result = CliRunner().invoke(error_percentage, ['--file-path',
+                                                   './test/log_sample.txt'])
+
+    assert result.output == 'Between time 1493969101 and time 1493969102:\n' \
+        'player.vimeo.com returned 33.33% 5xx errors\n' \
+        'vimeo.com returned 40.00% 5xx errors\n'
